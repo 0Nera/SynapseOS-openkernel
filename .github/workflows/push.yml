@@ -24,11 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Just lists all version of clang
-        run: sudo apt list "clang-*"
-
       # Установка зависимостей
-      - name: Installing
+      - name: Установка зависимостей
         run: |
           sudo apt install python3 build-essential xorriso grub-pc-bin mtools fasm zip doxygen
           wget -nv https://github.com/lordmilko/i686-elf-tools/releases/download/7.1.0/i686-elf-tools-linux.zip
@@ -36,22 +33,21 @@ jobs:
           rm i686-elf-tools-linux.zip
           
       # Запуск сборки ядра
-      - name: Building  kernel
-        run: python3 build.py kernel
+      - name: Сборка ядра
+        run: python3 scripts/build.py kernel
 
-      # Создание дистрибутива
-      - name: Building  iso
-        run: python3 build.py iso_l
+      # Создание дистрибутива (ISO)
+      - name: Создание дистрибутива (ISO)
+        run: python3 scripts/build.py iso_l
       
-      # Запуск Doxygen
-      - name: Doxygen
+      # Генерация документации
+      - name: Генерация документации
         run: |
-          rm -rf docs/doxygen/
-          sudo doxygen Doxyfile
-          ls docs/doxygen/
+          python3 scripts/build.py docs
+          tar -cvf doxygen.tar.gz doxygen/
           ls
       # Проверка релиза
-      - name: Check publish
+      - name: Проверка релиза
         run: |
           echo "done!"
           ls isodir/boot/
@@ -67,7 +63,7 @@ jobs:
       #    add: 'docs/doxygen/html/*'
 
       # Публикация релиза
-      - name: Publish release
+      - name: Публикация релиза
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GIT_TOKEN }}"
@@ -77,8 +73,8 @@ jobs:
           description: "Внимание! Данный релиз собран из последних изменений в ядре! Это не окончательная версия содержит ошибки и не рекомендуется к запуску без проверки на виртуальной машине."
           files: |
             LICENSE
-            SynapseOS.iso
+            SynapseOS-grub.iso
             SynapseOS-limine.iso
-            isodir/boot/initrd.tar
             isodir/boot/kernel.elf
-            docs/doxygen/rtf/refman.rtf
+            doxygen/rtf/refman.rtf
+            doxygen.tar.gz
