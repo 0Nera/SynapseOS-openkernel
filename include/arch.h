@@ -9,12 +9,48 @@
  * 
  */
 
-#pragma once
+#ifndef	_ARCH_H
+#define	_ARCH_H	1
 
 #ifdef __i386__
 #define halt() asm volatile("hlt")
+
+/**
+ * @brief Получение размера ядра
+ * 
+ * @return unsigned int размер ядра
+ */
+unsigned int arch_get_kernel_size() {
+    unsigned int temp_size = 0;
+
+    asm volatile (
+        ""
+        : "=d" (temp_size)
+    );
+
+    return temp_size;
+}
+
 #endif
 
 #ifdef __x86_64__
 #define halt() asm volatile("hlt")
+
+/**
+ * @brief Получение размера ядра
+ * 
+ * @return unsigned int размер ядра
+ */
+unsigned int arch_get_kernel_size() {
+    unsigned int temp_size = 0;
+
+    asm volatile (
+        ""
+        : "=d" (temp_size)
+    );
+
+    return temp_size;
+}
 #endif
+
+#endif // arch.h

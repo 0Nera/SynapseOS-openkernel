@@ -11,13 +11,15 @@
 
 
 #include <arch.h>
-#include <stdint.h>
+#include <libk.h>
+#include <tools.h>
+
 
 /**
- * @brief Это x86 VGA буффер. 25 строк по 80 символов.
+ * @brief Размер ядра
  * 
  */
-volatile uint16_t* vga_buffer = (uint16_t*)0xB8000;
+unsigned int kernel_size = 0;
 
 
 /**
@@ -27,22 +29,13 @@ volatile uint16_t* vga_buffer = (uint16_t*)0xB8000;
  * @param ebx Указатель на данные загрузчика
  * @param esp Стек
  */
-void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
-    unsigned int kernel_size = 0;
+noreturn void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
+    kernel_size = arch_get_kernel_size();
 
-    // Узнаем размер ядра
-    asm volatile (
-        ""
-        : "=d" (kernel_size)
-    );
-
-    // Очистка экрана
-	for (int col = 0; col < 80; col ++) {
-		for (int row = 0; row < 25; row ++) {
-			const int index = (80 * row) + col;
-			vga_buffer[index] = ((uint16_t)0x0F << 8) | ' ';
-		}
-	}
+    // До интеграции multiboot2 они бесполезны
+    UNUSED(eax);
+    UNUSED(ebx);
+    UNUSED(esp);
 
     // Останавливаем процессор
     for (;;) {
