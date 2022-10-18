@@ -11,17 +11,21 @@ Open Source реализация ядра SynapseOS
 
 ## Сборка и запуск
 
-Получение ISO образа системы с новым ядром осуществляется по заявкам - a2.dev@yandex.ru.
+Получение ISO образа системы с новым ядром(с закрытым исходным кодом) осуществляется по заявкам - a2.dev@yandex.ru.
+
+Перед сборкой установите xorriso, i686-elf-gcc, limine(а конкретно limine-deploy)
+
 Для сборки открытого ядра:
 
 ```python
 python3 scripts/build.py
 ```
 
-```batch
-bash scripts/build.sh
-```
+Для установки зависимостей:
 
+```python
+python3 scripts/install.py
+```
 
 ## Минимальные системные требования
 
