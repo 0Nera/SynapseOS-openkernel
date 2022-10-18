@@ -10,10 +10,10 @@ BIN_TARGETS = []
 ARCH = "i686" # "x86_64", "arm", "e2k"
 CC = f"{ARCH}-elf-gcc"
 DEBUG_FLAGS = ""
-if 1:
+if 0:
     DEBUG_FLAGS = "-ggdb -DDEBUG=1"
-CC_FLAGS = f"-fno-builtin -fno-stack-protector -ffreestanding {DEBUG_FLAGS} -Wall -Wextra -w  -O0 -I include/ -c "
-LD_FLAGS = f"-T src/arch/{ARCH}/link.ld -nostdlib -O0 -ggdb -lgcc "
+CC_FLAGS = f"-fno-builtin -fno-stack-protector -ffreestanding {DEBUG_FLAGS} -Wall -Wextra -O0 -I include/ -c "
+LD_FLAGS = f"-T src/arch/{ARCH}/link.ld -nostdlib -O0 "
 
 
 ''' Сборка ядра '''
@@ -32,7 +32,7 @@ def build_kernel():
     for i in range(0, len(SRC_TARGETS)):
         os.system(f"{CC} {DEBUG_FLAGS} {CC_FLAGS} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
         print(f"{CC} {CC_FLAGS} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
-    #print(f"{CC} {LD_FLAGS} -o isodir/boot/kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
+    print(f"{CC} {LD_FLAGS} -o isodir/boot/kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
     os.system(f"{CC} {LD_FLAGS} -o isodir/boot/kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
 
 
@@ -56,6 +56,33 @@ def build_programms():
     pass
 
 
+''' Сборка ISO limine '''
+def build_iso_limine():
+    print("Creating ISO with limine")
+    
+    os.system("""xorriso -as mkisofs -b limine-cd.bin \
+          -no-emul-boot -boot-load-size 4 -boot-info-table \
+          --efi-boot limine-cd-efi.bin \
+          -efi-boot-part --efi-boot-image --protective-msdos-label \
+          iso_root -o SynapseOS-limine.iso""")
+    
+    os.system("limine-deploy SynapseOS-limine.iso")
+    
+    #print(f"Сборка ISO/Limine образа заняла: {(time.time() - start_time):2f} сек.")
+
+
+''' Сборка ISO grub legasy bios'''
+def build_iso_grub_bios():
+    pass
+
+
+''' Сборка ISO grub EFI'''
+def build_iso_grub_efi():
+    pass
+
+
 if __name__ == '__main__':
     build_kernel()
+    build_iso_limine()
     build_docs()
+    os.system("qemu-system-i386 -kernel isodir/boot/kernel.elf")
