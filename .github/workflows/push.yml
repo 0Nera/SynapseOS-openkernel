@@ -38,7 +38,11 @@ jobs:
 
       # Создание дистрибутива (ISO)
       - name: Создание дистрибутива (ISO)
-        run: python3 scripts/build.py iso_l
+        run: |
+          git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1")
+          make -C limine
+          mkdir -p iso_root
+          xorriso -as mkisofs -b limine-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table --efi-boot limine-cd-efi.bin -efi-boot-part --efi-boot-image --protective-msdos-label isodir -o SynapseOS-limine.iso
       
       # Генерация документации
       - name: Генерация документации
@@ -50,8 +54,8 @@ jobs:
       - name: Проверка релиза
         run: |
           echo "done!"
-          ls isodir/boot/
           ls
+          ls isodir/boot/
         
       # Публикация документации
       #- name: Commit changes
