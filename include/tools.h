@@ -1,7 +1,7 @@
 /**
  * @file tools.h
  * @author Арен Елчинян (a2.dev@yandex.com)
- * @brief 
+ * @brief Дополнительные утилиты для упрощения написания кода
  * @version 0.1.0
  * @date 18-10-2022
  * 
