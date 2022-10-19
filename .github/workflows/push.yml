@@ -16,7 +16,7 @@ on:
 
 # Выполнение рабочего процесса состоит из одного или нескольких заданий, которые могут выполняться последовательно или параллельно
 jobs:
-  build:
+  Сборка:
     #  Все будет работать на последней версии Ubuntu
     runs-on: ubuntu-latest
 
@@ -41,7 +41,6 @@ jobs:
         run: |
           git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
           make -C limine
-          mkdir -p iso_root
           xorriso -as mkisofs -b limine-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table --efi-boot limine-cd-efi.bin -efi-boot-part --efi-boot-image --protective-msdos-label isodir -o SynapseOS-limine.iso
       
       # Генерация документации
@@ -53,8 +52,9 @@ jobs:
       # Проверка релиза
       - name: Проверка релиза
         run: |
-          echo "done!"
+          echo "           /"
           ls
+          echo "           isodir/boot/"
           ls isodir/boot/
         
       # Публикация документации
