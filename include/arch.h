@@ -9,22 +9,17 @@
  * 
  */
 
+
 #ifndef	_ARCH_H
 #define	_ARCH_H	1
 
 
-#ifdef __i386__
+#if (defined __i386__ || defined __x86_64__)
 
 #define halt() asm volatile("hlt")
 unsigned int arch_get_kernel_size();
 
-#elif __x86_64__
+#endif
 
-#define halt() asm volatile("hlt")
 
 #endif // arch.h
-
-#endif // arch.h
-
-
-unsigned int arch_get_kernel_size();
