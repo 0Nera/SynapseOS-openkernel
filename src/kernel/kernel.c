@@ -11,7 +11,10 @@
 
 
 #include <arch.h>
+#include <com1_log.h>
 #include <libk.h>
+#include <multiboot2.h>
+#include <ports.h>
 #include <tools.h>
 
 
@@ -33,9 +36,12 @@ noreturn void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int es
     kernel_size = arch_get_kernel_size();
 
     // До интеграции multiboot2 они бесполезны
-    UNUSED(eax);
     UNUSED(ebx);
     UNUSED(esp);
+
+    com1_log("Kernel ready, %x == %x", eax, MULTIBOOT2_BOOTLOADER_MAGIC);
+    
+    unit_test(eax == MULTIBOOT2_BOOTLOADER_MAGIC, "Check bootloader magic");
 
     // Останавливаем процессор
     for (;;) {

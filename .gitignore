@@ -54,3 +54,4 @@ dkms.conf
 /doxygen/
 .vscode/settings.json
 *.iso
+serial.log
