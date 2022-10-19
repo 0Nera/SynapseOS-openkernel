@@ -30,8 +30,12 @@ def build_kernel():
     print(SRC_TARGETS)
     print(BIN_TARGETS)
     shutil.rmtree("bin", ignore_errors=True)
-    os.mkdir("bin")
-    os.mkdir("bin\\kernel")
+
+    if not os.path.exists("bin\\"):
+        os.mkdir("bin\\")
+
+    if not os.path.exists("bin\\kernel\\"):
+        os.mkdir("bin\\kernel\\")
 
     for i in range(0, len(SRC_TARGETS)):
         os.system(f"{CC} {DEBUG_FLAGS} {CC_FLAGS} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
