@@ -51,6 +51,6 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-doxygen/
+/doxygen/
 .vscode/settings.json
 *.iso
