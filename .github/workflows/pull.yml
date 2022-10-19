@@ -1,0 +1,65 @@
+name: SynapseOS Buildbot
+
+# Контроль событий при которых будет сборка
+on:
+  # В нашем случае это push в ветку master
+  pull_request:
+    tags:
+        - "v*"
+    branches: [ "main" ]
+ 
+  workflow_dispatch:
+
+# Выполнение рабочего процесса состоит из одного или нескольких заданий, которые могут выполняться последовательно или параллельно
+jobs:
+  Сборка:
+    #  Все будет работать на последней версии Ubuntu
+    runs-on: ubuntu-latest
+
+    # Шаги представляют собой последовательность задач, которые будут выполняться как часть задания
+    steps:
+      - uses: actions/checkout@v3
+
+      # Установка зависимостей
+      - name: Установка зависимостей
+        run: |
+          sudo apt install python3 build-essential xorriso mtools zip doxygen
+          wget -nv https://github.com/lordmilko/i686-elf-tools/releases/download/7.1.0/i686-elf-tools-linux.zip
+          sudo unzip i686-elf-tools-linux.zip -d /usr/local
+          rm i686-elf-tools-linux.zip
+          
+      # Запуск сборки ядра
+      - name: Сборка ядра
+        run: python3 scripts/build.py kernel
+
+      # Создание дистрибутива (ISO)
+      - name: Создание дистрибутива (ISO)
+        run: |
+          git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
+          make -C limine
+          xorriso -as mkisofs -b limine-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table --efi-boot limine-cd-efi.bin -efi-boot-part --efi-boot-image --protective-msdos-label isodir -o SynapseOS-limine.iso
+      
+      # Генерация документации
+      - name: Генерация документации
+        run: |
+          python3 scripts/build.py docs
+          tar -cvf doxygen.tar.gz doxygen/
+          ls
+      # Проверка релиза
+      - name: Проверка релиза
+        run: |
+          echo "           /"
+          ls
+          echo "           isodir/boot/"
+          ls isodir/boot/
+        
+      # Публикация документации
+      #- name: Commit changes
+      #  uses: EndBug/add-and-commit@v9
+      #  with:
+      #    author_name: Github
+      #    author_email: github@example.com
+      #    message: 'документация: Обновление документации с помощью doxygen [Автосборка]'
+      #    add: 'docs/doxygen/html/*'
+
+      
