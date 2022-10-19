@@ -12,33 +12,40 @@ CC = f"{ARCH}-elf-gcc"
 DEBUG_FLAGS = ""
 if 0:
     DEBUG_FLAGS = "-ggdb -DDEBUG=1"
-CC_FLAGS = f"-fno-builtin -fno-stack-protector -ffreestanding {DEBUG_FLAGS} -Wall -Wextra -O0 -I include/ -c "
-LD_FLAGS = f"-T src/arch/{ARCH}/link.ld -nostdlib -O0 "
+CC_FLAGS = f"-fno-builtin -fno-stack-protector -ffreestanding {DEBUG_FLAGS} -Wall -Wextra -O0 -I include\\ -c "
+LD_FLAGS = f"-T src\\arch\\{ARCH}\\link.ld -nostdlib -O0 "
 
 
 ''' Сборка ядра '''
 def build_kernel():
-    files = glob.glob(f"src/arch/{ARCH}/**/*.s", recursive=True) + \
-        glob.glob("src/**/*.c", recursive=True) + \
-        glob.glob(f"src/arch/{ARCH}/**/*.c", recursive=True)
+    print("Сборка ядра")
+
+    files = glob.glob("src\\kernel\\**\\*.c", recursive=True) + \
+        glob.glob(f"src\\arch\\{ARCH}\\**\\*.s", recursive=True) + \
+        glob.glob(f"src\\arch\\{ARCH}\\**\\*.c", recursive=True)
 
     for i in range(len(files)):
         SRC_TARGETS.append(files[i])
-        BIN_TARGETS.append(os.path.join("bin/kernel/", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
+        BIN_TARGETS.append(os.path.join("bin\\kernel\\", os.path.basename(SRC_TARGETS[i]) + '.o '  ))
+    print(SRC_TARGETS)
+    print(BIN_TARGETS)
     shutil.rmtree("bin", ignore_errors=True)
     os.mkdir("bin")
-    os.mkdir("bin/kernel")
+    os.mkdir("bin\\kernel")
 
     for i in range(0, len(SRC_TARGETS)):
         os.system(f"{CC} {DEBUG_FLAGS} {CC_FLAGS} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
         print(f"{CC} {CC_FLAGS} {SRC_TARGETS[i]} -o {BIN_TARGETS[i]}")
-    print(f"{CC} {LD_FLAGS} -o isodir/boot/kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
-    os.system(f"{CC} {LD_FLAGS} -o isodir/boot/kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
+
+    print(f"{CC} {LD_FLAGS} -o isodir\\boot\\kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
+    os.system(f"{CC} {LD_FLAGS} -o isodir\\boot\\kernel.elf {' '.join(str(x) for x in BIN_TARGETS)}")
 
 
-''' Сборка документации '''
+''' Генерация документации '''
 def build_docs():
-    os.system("doxygen scripts/Doxyfile")
+    print("Генерация документации")
+
+    os.system("doxygen scripts\\Doxyfile")
 
 
 ''' Сборка модулей '''
@@ -58,17 +65,17 @@ def build_programms():
 
 ''' Сборка ISO limine '''
 def build_iso_limine():
-    print("Creating ISO with limine")
+    print("Сборка ISO limine")
     
     os.system("""xorriso -as mkisofs -b limine-cd.bin \
           -no-emul-boot -boot-load-size 4 -boot-info-table \
           --efi-boot limine-cd-efi.bin \
           -efi-boot-part --efi-boot-image --protective-msdos-label \
-          iso_root -o SynapseOS-limine.iso""")
+          isodir -o SynapseOS-limine.iso""")
     
     os.system("limine-deploy SynapseOS-limine.iso")
     
-    #print(f"Сборка ISO/Limine образа заняла: {(time.time() - start_time):2f} сек.")
+    #print(f"Сборка ISO\\Limine образа заняла: {(time.time() - start_time):2f} сек.")
 
 
 ''' Сборка ISO grub legasy bios'''
