@@ -42,9 +42,9 @@ jobs:
       # Генерация документации
       - name: Генерация документации
         run: |
-          python3 scripts/build.py docs
           tar -cvf doxygen.tar.gz doxygen/
           ls
+
       # Проверка релиза
       - name: Проверка релиза
         run: |
