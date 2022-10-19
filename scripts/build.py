@@ -85,4 +85,4 @@ if __name__ == '__main__':
     build_kernel()
     build_iso_limine()
     build_docs()
-    os.system("qemu-system-i386 -kernel isodir/boot/kernel.elf")
+    os.system("qemu-system-i386 -cdrom SynapseOS-limine.iso")
