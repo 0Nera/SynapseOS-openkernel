@@ -10,11 +10,23 @@
  */
 
 
+#include <libk.h>
+
+
 #ifndef	_PORTS_H
 #define	_PORTS_H	1
 
 
 #if (defined __i386__ || defined __x86_64__)
+
+#define PORTS_COM1 0x3f8
+#define PORTS_COM2 0x2F8
+#define PORTS_COM3 0x3E8
+#define PORTS_COM4 0x2E8
+#define PORTS_COM5 0x5F8
+#define PORTS_COM6 0x4F8
+#define PORTS_COM7 0x5E8
+#define PORTS_COM8 0x4E8
 
 #define PORTS_PIC1 0x20
 #define PORTS_PIC2 0xA0
