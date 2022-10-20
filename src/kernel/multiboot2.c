@@ -92,6 +92,14 @@ bool multiboot2_init(unsigned int magic, unsigned int addr) {
                         (unsigned) mmap->type);
                 }
                 break;
+            case MULTIBOOT_TAG_TYPE_VBE: {
+                struct multiboot_tag_vbe *tag_vbe = (struct multiboot_tag_vbe *) tag;
+                com1_log("vbe_mode: %d", tag_vbe->vbe_mode);
+                com1_log("vbe_interface_seg: %d", tag_vbe->vbe_interface_seg);
+                com1_log("vbe_interface_off: %d", tag_vbe->vbe_interface_off);
+                com1_log("vbe_interface_len: %d", tag_vbe->vbe_interface_len);
+                break;
+            }  
             case MULTIBOOT_TAG_TYPE_FRAMEBUFFER: {
                 multiboot_uint32_t color;
                 struct multiboot_tag_framebuffer *tagfb = (struct multiboot_tag_framebuffer *) tag;

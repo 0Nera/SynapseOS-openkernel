@@ -52,7 +52,6 @@ multiboot_start:
     .long CHECKSUM
 
     # Графические флаги
-    /*
     .align 8
     .short TAG_FRAMEBUFFER
     .short TAG_REQUIRED
@@ -60,7 +59,6 @@ multiboot_start:
     .long 1024
     .long 768
     .long 32
-*/
     # Конец тега
     .align 8
     .short TAG_END
