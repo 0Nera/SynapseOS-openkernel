@@ -43,6 +43,8 @@ noreturn void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int es
     
     unit_test(eax == MULTIBOOT2_BOOTLOADER_MAGIC, "Check bootloader magic");
 
+    unit_test(multiboot2_init(eax, ebx), "Check multiboot2 work");
+
     // Останавливаем процессор
     for (;;) {
         halt();
