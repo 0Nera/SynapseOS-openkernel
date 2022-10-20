@@ -43,6 +43,7 @@ jobs:
       - name: Генерация документации
         run: |
           mkdir doxygen
+          doxygen scripts/Doxyfile
           tar -cvf doxygen.tar.gz doxygen/
           ls
 
