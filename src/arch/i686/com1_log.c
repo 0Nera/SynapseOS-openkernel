@@ -103,6 +103,30 @@ static void com1_log_printdec(int num) {
 }
 
 
+/**
+ * @brief Вывод десятичного числа больше нуля в COM1 порт
+ * 
+ * @param num Выводимое число
+ */
+static void com1_log_printudec(unsigned int num) {
+    int i;
+    char buf[21] = {0};
+
+    if (!num) {
+        com1_log_putchar('0');
+        return;
+    }
+
+    for (i = 19; num; i--) {
+        buf[i] = (num % 10) + 0x30;
+        num = num / 10;
+    }
+
+    i++;
+    com1_log_puts(buf + i);
+}
+
+
 
 /**
  * @brief Вывод в COM1 порт форматированной строки используя неопределенное количество аргументов
@@ -124,6 +148,8 @@ void com1_log_printf(const char *format_string, ...) {
                 com1_log_printhex(va_arg(args, int));
             } else if (*format_string == 'd') {
                 com1_log_printdec(va_arg(args, int));
+            } else if (*format_string == 'u') {
+                com1_log_printudec(va_arg(args, unsigned int));
             } else if (*format_string == 's') {
                 com1_log_puts(va_arg(args, char*));
             } else if (*format_string == 'c') {
