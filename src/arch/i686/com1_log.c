@@ -16,7 +16,7 @@
 #include <tools.h>
 
 
-static const char CONVERSION_TABLE[] = "0123456789abcdef";
+static const char CONVERSION_TABLE[] = "0123456789ABCDEF";
 
 
 /**
