@@ -44,6 +44,6 @@ typedef __builtin_va_list va_list;
 uint32_t strlen(const char *string);
 
 
-bool multiboot2_init(unsigned int magic, unsigned int addr);
+bool multiboot2_init(unsigned int addr);
 
 #endif  // libk.h

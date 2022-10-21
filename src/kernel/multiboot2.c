@@ -18,27 +18,16 @@
 /**
  * @brief Получение данных из multiboot2
  * 
- * @param magic Магическое число
  * @param addr Адресс структуры Multiboot2
  * @return true В случае успешной инициализации
  * @return false В случае ошибки
  */
-bool multiboot2_init(unsigned int magic, unsigned int addr) {
+bool multiboot2_init(unsigned int addr) {
     struct multiboot_tag *tag;
     unsigned size;
 
-    /*  Am I booted by a Multiboot-compliant boot loader? */
-    if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) {
-        com1_log("Invalid magic number: %x", (unsigned) magic);
-        return false;
-    }
+    size = *(unsigned*) addr;
 
-    if (addr & 7) {
-        com1_log ("Unaligned mbi: %x", addr);
-        return false;
-    }
-
-    size = *(unsigned *) addr;
     com1_log ("Announced mbi size %x", size);
     
     for (tag = (struct multiboot_tag *) (addr + 8);

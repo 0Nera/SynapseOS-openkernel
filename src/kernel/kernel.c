@@ -35,15 +35,17 @@ unsigned int kernel_size = 0;
 noreturn void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
     kernel_size = arch_get_kernel_size();
 
-    // До интеграции multiboot2 они бесполезны
-    UNUSED(ebx);
+    // Стек пока не используем
     UNUSED(esp);
 
-    com1_log("Kernel ready, %x == %x", eax, MULTIBOOT2_BOOTLOADER_MAGIC);
-    
-    unit_test(eax == MULTIBOOT2_BOOTLOADER_MAGIC, "Check bootloader magic");
+    com1_log("Kernel ready, magic %x", eax);
+    com1_log("Mbi %x", ebx);
+    com1_log("kernel size %ukb (with stack)", ((uint32_t) &KERNEL_SIZE) >> 10);
 
-    unit_test(multiboot2_init(eax, ebx), "Check multiboot2 work");
+    unit_test(eax == MULTIBOOT2_BOOTLOADER_MAGIC, "Check bootloader magic");
+    unit_test(ebx & 7, "Unaligned mbi check");
+
+    unit_test(multiboot2_init(ebx), "Check multiboot2 work");
 
     // Останавливаем процессор
     for (;;) {
