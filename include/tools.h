@@ -14,7 +14,32 @@
 #define _TOOLS_H 1
 
 
+/**
+ * @brief Для неиспользуемых переменных
+ * 
+ */
 #define UNUSED(x) (void)(x)
+
+
+/**
+ * @brief Логическое ИЛИ
+ * 
+ */
+#define OR ||
+
+
+/**
+ * @brief Логическое И
+ * 
+ */
+#define AND &&
+
+
+/**
+ * @brief Инверсия
+ * 
+ */
+#define NOT(x) !(x)
 
 
 #endif
