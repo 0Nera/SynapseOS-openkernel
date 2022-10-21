@@ -1,8 +1,9 @@
 ENTRY(_start)
 
 SECTIONS {
-	. = 1M;
-	kernel_phys_addr = .;
+    KERNEL_BEGIN = .;
+    KERNEL_BEGIN_PHYS = . - 0xC0000000;
+    
 
 	.text BLOCK(128K) : ALIGN(4K) {
 		text_sect_phys_addr = .;
@@ -23,6 +24,8 @@ SECTIONS {
 		bss_sect_phys_addr = .;
 		*(COMMON)
 		*(.bss)
-		kernel_end = .;
+		KERNEL_END = .;
 	}
+
+	KERNEL_SIZE = KERNEL_END - KERNEL_BEGIN;
 }

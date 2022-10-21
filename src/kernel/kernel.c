@@ -34,14 +34,14 @@ unsigned int kernel_size = 0;
  * @param esp Стек
  */
 noreturn void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int esp) {
-    kernel_size = arch_get_kernel_size();
+    kernel_size =  ((uint32_t) &KERNEL_SIZE) >> 10;
 
     // Стек пока не используем
     UNUSED(esp);
 
     com1_log("Kernel ready, magic %x", eax);
     com1_log("Mbi %x", ebx);
-    com1_log("kernel size %ukb (with stack)", ((uint32_t) &KERNEL_SIZE) >> 10);
+    com1_log("kernel size %ukb (with stack)", kernel_size);
 
     unit_test(eax == MULTIBOOT2_BOOTLOADER_MAGIC, "Check bootloader magic");
     unit_test(ebx & 7, "Unaligned mbi check");
