@@ -11,6 +11,7 @@
 
 
 #include <arch.h>
+#include <dt.h>
 #include <com1_log.h>
 #include <libk.h>
 #include <multiboot2.h>
@@ -46,6 +47,8 @@ noreturn void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int es
     unit_test(ebx & 7, "Unaligned mbi check");
 
     unit_test(multiboot2_init(ebx), "Check multiboot2 work");
+ 
+    unit_test(dt_init(), "Setup descriptor tables");
 
     // Останавливаем процессор
     for (;;) {

@@ -1,7 +1,7 @@
 /**
  * @file arch.c
  * @author Арен Елчинян (a2.dev@yandex.com)
- * @brief 
+ * @brief Архитектурно-зависимые функции
  * @version 0.1.0
  * @date 19-10-2022
  * 
