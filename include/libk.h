@@ -22,12 +22,19 @@
 #define va_copy(d,s)	__builtin_va_copy(d,s)
 #define __va_copy(d,s)	__builtin_va_copy(d,s)
 
+#define max(a,b) \
+   ({ __typeof__ (a) _a = (a); \
+       __typeof__ (b) _b = (b); \
+     _a > _b ? _a : _b; })
+
 #define true 1
 #define false 0
 
 typedef unsigned char uint8_t;
 typedef unsigned short uint16_t;
 typedef unsigned int uint32_t;
+
+typedef __UINTPTR_TYPE__ uintptr_t;
 
 typedef _Bool bool;
 
