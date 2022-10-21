@@ -84,6 +84,7 @@ def build_iso_limine():
 
 ''' Сборка ISO grub legasy bios'''
 def build_iso_grub_bios():
+    os.system("grub-mkrescue -o SynapseOS-grub.iso isodir")
     pass
 
 

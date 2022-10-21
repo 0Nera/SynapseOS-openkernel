@@ -27,7 +27,7 @@ jobs:
       # Установка зависимостей
       - name: Установка зависимостей
         run: |
-          sudo apt install python3 build-essential xorriso mtools zip doxygen
+          sudo apt install python3 build-essential xorriso grub-pc-bin mtools zip doxygen
           wget -nv https://github.com/lordmilko/i686-elf-tools/releases/download/7.1.0/i686-elf-tools-linux.zip
           sudo unzip i686-elf-tools-linux.zip -d /usr/local
           rm i686-elf-tools-linux.zip
@@ -42,7 +42,8 @@ jobs:
           git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
           make -C limine
           xorriso -as mkisofs -b limine-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table --efi-boot limine-cd-efi.bin -efi-boot-part --efi-boot-image --protective-msdos-label isodir -o SynapseOS-limine.iso
-      
+          grub-mkrescue -o SynapseOS-grub.iso isodir
+
       # Генерация документации
       - name: Генерация документации
         run: |
@@ -50,6 +51,7 @@ jobs:
           doxygen scripts/Doxyfile
           tar -cvf doxygen.tar.gz doxygen/
           ls
+        
       # Проверка релиза
       - name: Проверка релиза
         run: |

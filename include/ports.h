@@ -1,7 +1,7 @@
 /**
  * @file ports.h
  * @author Арен Елчинян (a2.dev@yandex.com)
- * @brief 
+ * @brief Прослойка для работы с портами ввода-вывода
  * @version 0.1.0
  * @date 19-10-2022
  * 
