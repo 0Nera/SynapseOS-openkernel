@@ -49,7 +49,8 @@ noreturn void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int es
     unit_test(multiboot2_init(ebx), "Check multiboot2 work");
  
     unit_test(dt_init(), "Setup descriptor tables");
-    
+
+    arch_cpuid_test();
 
     // Останавливаем процессор
     for (;;) {
