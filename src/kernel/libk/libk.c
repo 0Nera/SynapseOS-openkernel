@@ -20,11 +20,11 @@
  * @return uint32_t Длина строки
  */
 uint32_t strlen(const char *string) {
-    uint32_t lenght = 0;
+    uint32_t length = 0;
 
-    while(string[lenght]) {
-        lenght++;
+    while(string[length]) {
+        length++;
     }
 
-    return lenght;
+    return length;
 }
