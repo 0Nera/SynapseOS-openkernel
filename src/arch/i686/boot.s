@@ -17,10 +17,12 @@
 # 32х битный код
 .code32
 
+
 # Размер стека
 # 4096 * 16 * 8 = 524288 байт. 
 # 524288 байт = 512 килобайт
 .set STACK_SIZE, 4096 * 16 * 8
+
 # Multiboot2 теги
 .set TAG_END,          0
 .set TAG_FRAMEBUFFER,  5
@@ -44,7 +46,7 @@
 # Подпись находится в отдельном разделе, поэтому заголовок можно принудительно разместить в первых 8 килобайтах файла ядра.
 .section .multiboot
 multiboot_start:
-    # Magic
+    # Магическое число и прочие данные
     .align 8
     .long MAGIC
     .long ARCH
@@ -59,6 +61,7 @@ multiboot_start:
     .long 1024
     .long 768
     .long 32
+
     # Конец тега
     .align 8
     .short TAG_END
@@ -69,22 +72,27 @@ multiboot_end:
 .section	.text
 .global _start
 
+
 # Входная точка
 _start:
 	cli
 	mov 	$(_stack + STACK_SIZE), %esp
 	push    $0x0
 	popf
-	push	%esp
-	push	%ebx
-	push	%eax
-	call	kernel_startup
-	hlt
+
+    finit   # Инициализация FPU
+
+	push	%esp    # Стек
+	push	%ebx    # Структура multiboot2
+	push	%eax    # Магическое число
+	
+    call	kernel_startup
+    
 
 # Останавливаем процессор	
 __halt_me:
 	cli
-        hlt
+    hlt
 	jmp	__halt_me
 
 .comm _stack, STACK_SIZE
