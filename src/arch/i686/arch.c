@@ -56,23 +56,23 @@ void arch_cpuid_test() {
         com1_log("cpuid eax %x ebx %x edx %x ecx %x", eax, ebx, edx, ecx);
         
 
-        for (int shifted = 0; shifted < 0x20; shifted += 8) {
-            int mask = 0xFF << shifted;
-            int matched = (ebx & mask) >> shifted;
+        for (int shifted = 0; shifted < 4; shifted++) {
+            int mask = 0xFF << shifted * 8;
+            int matched = (ebx & mask) >> shifted * 8;
             string[pos] = matched;
             pos++;
         }
 
-        for (int shifted = 0; shifted < 0x20; shifted += 8) {
-            int mask = 0xFF << shifted;
-            int matched = (edx & mask) >> shifted;
+        for (int shifted = 0; shifted < 4; shifted++) {
+            int mask = 0xFF << shifted * 8;
+            int matched = (edx & mask) >> shifted * 8;
             string[pos] = matched;
             pos++;
         }
 
-        for (int shifted = 0; shifted < 0x20; shifted += 8) {
-            int mask = 0xFF << shifted;
-            int matched = (ecx & mask) >> shifted;
+        for (int shifted = 0; shifted < 4; shifted++) {
+            int mask = 0xFF << shifted * 8;
+            int matched = (ecx & mask) >> shifted * 8;
             string[pos] = matched;
             pos++;
         }
