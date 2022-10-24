@@ -81,6 +81,34 @@
 
 
 /**
+ * @brief Атрибут для упакованных структур
+ * 
+ */
+#define PACKED __attribute__((packed))
+
+
+/**
+ * @brief Число от -128 до 127 (1 байт)
+ * 
+ */
+typedef char int8_t;
+
+
+/**
+ * @brief Число от -От -32768 до 32767 (2 байта)
+ * 
+ */
+typedef short int16_t;
+
+
+/**
+ * @brief Число от -2147483648 до 2147483647 (4 байта)
+ * 
+ */
+typedef int int32_t;
+
+
+/**
  * @brief Число от 0 до 255 (1 байт)
  * 
  */
@@ -125,7 +153,7 @@ typedef __builtin_va_list va_list;
 
 uint32_t strlen(const char *string);
 
-
 bool multiboot2_init(unsigned int addr);
+
 
 #endif  // libk.h

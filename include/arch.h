@@ -34,7 +34,7 @@ extern uintptr_t KERNEL_END;
 extern uintptr_t KERNEL_SIZE;
 
 unsigned int arch_get_kernel_size();
-
+void arch_cpuid_test();
 
 #endif
 
