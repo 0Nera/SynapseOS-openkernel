@@ -12,7 +12,8 @@ CC = f"{ARCH}-elf-gcc"
 DEBUG_FLAGS = ""
 if 0:
     DEBUG_FLAGS = "-ggdb -DDEBUG=1"
-CC_FLAGS = f"-fno-builtin -fno-stack-protector -ffreestanding {DEBUG_FLAGS} -Wall -Wextra -O0 -I include// -c "
+CC_FLAGS = f"-fno-builtin -fstack-check=no -fno-stack-protector -ffreestanding {DEBUG_FLAGS} -Wall -Wextra -O0 -I include// -c "
+CC_FLAGS = f"-ffreestanding {DEBUG_FLAGS} -Wall -Wextra -O0 -I include// -c "
 LD_FLAGS = f"-T src//arch//{ARCH}//link.ld -nostdlib -O0 "
 
 
@@ -85,19 +86,19 @@ def build_iso_limine():
 ''' Сборка ISO grub legasy bios'''
 def build_iso_grub_bios():
     os.system("grub-mkrescue -o SynapseOS-grub.iso isodir")
-    pass
 
 
 ''' Сборка ISO grub EFI'''
 def build_iso_grub_efi():
+    # TODO
     pass
 
 
 if __name__ == '__main__':
     build_kernel()
     
-    build_iso_limine()
+    #build_iso_limine()
 
     #build_docs()
 
-    os.system("qemu-system-i386 -cdrom SynapseOS-limine.iso -serial file:serial.log")
+    #os.system("qemu-system-i386 -cdrom SynapseOS-limine.iso -serial file:serial.log")
