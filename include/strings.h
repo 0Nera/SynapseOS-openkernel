@@ -17,6 +17,10 @@
 #define	_STRINGS_H	1
 
 
+/**
+ * @brief Тип данных для хранения UTF-8 строк
+ * 
+ */
 typedef int8_t string_utf8_t;
 
 
