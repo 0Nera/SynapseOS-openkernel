@@ -54,6 +54,7 @@ jobs:
           ls
           echo "           isodir/boot/"
           ls isodir/boot/
+          python3 scripts/send_admin.py $TELEGRAM_TOKEN PULL
         
       # Публикация документации
       #- name: Commit changes
