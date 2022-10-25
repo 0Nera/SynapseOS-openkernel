@@ -31,6 +31,8 @@ jobs:
           wget -nv https://github.com/lordmilko/i686-elf-tools/releases/download/7.1.0/i686-elf-tools-linux.zip
           sudo unzip i686-elf-tools-linux.zip -d /usr/local
           rm i686-elf-tools-linux.zip
+        env:
+          TG_KEY: ${{ secrets.TELEGRAM_TOKEN }}
           
       # Запуск сборки ядра
       - name: Сборка ядра
@@ -60,7 +62,7 @@ jobs:
           echo "           isodir/boot/"
           ls isodir/boot/
           pip3 install aiogram
-          python3 scripts/send_admin.py $TELEGRAM_TOKEN PUSH
+          python3 scripts/send_admin.py $TG_KEY PUSH
         
       # Публикация документации
       #- name: Commit changes
