@@ -25,7 +25,7 @@ typedef struct {
     uint16_t major;     ///< Версия
     uint16_t minor;     ///< Подверсия
     uint16_t patch;     ///< Исправление
-} version_t;
+} PACKED version_t;
 
 
 #endif // string.h
