@@ -47,9 +47,9 @@ jobs:
           
         # Отправка в телеграм
       - name: Проверка env
-        run: echo  $TG_TEXT
+        run: echo  "$TG_TEXT"
           
         # Отправка в телеграм
       - name: Проверка релиза
-        run: python3 scripts/send_admin.py $TG_KEY PUSH
+        run: python3 scripts/send_admin.py "$TG_KEY" "PUSH"
           
