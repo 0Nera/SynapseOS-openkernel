@@ -25,14 +25,16 @@
  */
 #define MODULE_PERMISSIONS_COUNT 8
 
+#define MODULE_PERMISSION_ALERT 0
+#define MODULE_PERMISSION_ 0
 
 /**
  * @brief Структура для хранения и передачи информации о требуемых модулю разрешениях
  * 
  */
 typedef struct {
-    uint32_t permissions_count;                     ///< Количество разрешений
-    uint32_t permissions[MODULE_PERMISSIONS_COUNT]; ///< Список разрешений
+    bool permissions[MODULE_PERMISSIONS_COUNT]; ///< Список разрешений
+    uint32_t permissions_funcs[MODULE_PERMISSIONS_COUNT]; ///< Указатели на разрешения
 } module_permissions_t;
 
 
@@ -53,6 +55,7 @@ typedef struct {
     string_utf8_t *name;                        ///< Имя модуля
     version_t version;                          ///< Версия модуля
     module_permissions_t permissions;           ///< Разрешения модуля
+    void (*module_permissions)(uint32_t*, uint32_t*);  ///< Обработчик разрешений модуля
     void (*module_post)(uint32_t*, uint32_t*);  ///< POST запрос модуля
     void *(*module_get)(uint32_t*, uint32_t*);  ///< GET запрос модуля
 } module_info_t;
