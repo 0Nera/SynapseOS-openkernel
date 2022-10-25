@@ -97,8 +97,8 @@ def build_iso_grub_efi():
 if __name__ == '__main__':
     build_kernel()
     
-    #build_iso_limine()
+    build_iso_limine()
 
-    #build_docs()
+    build_docs()
 
-    #os.system("qemu-system-i386 -cdrom SynapseOS-limine.iso -serial file:serial.log")
+    os.system("qemu-system-i386 -cdrom SynapseOS-limine.iso -serial file:serial.log")

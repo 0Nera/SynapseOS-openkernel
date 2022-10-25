@@ -22,9 +22,9 @@
  * 
  */
 typedef struct {
-    uint16_t major;
-    uint16_t minor;
-    uint16_t patch;
+    uint16_t major;     ///< Версия
+    uint16_t minor;     ///< Подверсия
+    uint16_t patch;     ///< Исправление
 } version_t;
 
 
