@@ -1,4 +1,4 @@
-name: SynapseOS pull
+name: pull
 
 # Контроль событий при которых будет сборка
 on:

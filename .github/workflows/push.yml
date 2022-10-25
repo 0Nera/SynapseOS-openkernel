@@ -1,4 +1,4 @@
-name: SynapseOS Push
+name: push
 
 # Контроль событий при которых будет сборка
 on:

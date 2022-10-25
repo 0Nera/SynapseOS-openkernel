@@ -1,12 +1,7 @@
-name: SynapseOS TEST
+name: test
 
 # Контроль событий при которых будет сборка
 on:
-  # В нашем случае это push в ветку master
-  push:
-    tags:
-        - "v*"
-    branches: [ "main" ]
   #pull_request:
   #  tags:
   #      - "v*"
@@ -23,14 +18,18 @@ jobs:
     # Шаги представляют собой последовательность задач, которые будут выполняться как часть задания
     steps:
       - uses: actions/checkout@v3
+        env:
+          TG_TEXT: ${{ secrets.TEST_TEXT }}
+          TG_KEY: ${{ secrets.TELEGRAM_TOKEN }}
+          
+        # Отправка в телеграм
+      - name: Проверка env
+        run: echo  "$TG_TEXT"
 
       # Установка зависимостей
       - name: Установка зависимостей
         run: |
           sudo apt install python3 doxygen
-        env:
-          TG_TEXT: ${{ secrets.TEST_TEXT }}
-          TG_KEY: ${{ secrets.TELEGRAM_TOKEN }}
           
       # Генерация документации
       - name: Генерация документации
@@ -44,10 +43,6 @@ jobs:
       - name: Проверка релиза
         run: |
           pip3 install aiogram
-          
-        # Отправка в телеграм
-      - name: Проверка env
-        run: echo  "$TG_TEXT"
           
         # Отправка в телеграм
       - name: Проверка релиза
