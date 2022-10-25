@@ -1,0 +1,53 @@
+name: SynapseOS Push
+
+# Контроль событий при которых будет сборка
+on:
+  # В нашем случае это push в ветку master
+  push:
+    tags:
+        - "v*"
+    branches: [ "main" ]
+  #pull_request:
+  #  tags:
+  #      - "v*"
+  #  branches: [ "master" ]
+  # Позволяет запускать этот рабочий процесс вручную на вкладке Actions
+  workflow_dispatch:
+
+# Выполнение рабочего процесса состоит из одного или нескольких заданий, которые могут выполняться последовательно или параллельно
+jobs:
+  build:
+    #  Все будет работать на последней версии Ubuntu
+    runs-on: ubuntu-latest
+
+    # Шаги представляют собой последовательность задач, которые будут выполняться как часть задания
+    steps:
+      - uses: actions/checkout@v3
+
+      # Установка зависимостей
+      - name: Установка зависимостей
+        run: |
+          sudo apt install python3 doxygen
+        env:
+          TG_TEXT: ${{ secrets.TEST_TEXT }}
+          TG_KEY: ${{ secrets.TELEGRAM_TOKEN }}
+          
+      # Генерация документации
+      - name: Генерация документации
+        run: |
+          mkdir -p doxygen
+          doxygen scripts/Doxyfile
+          tar -cvf doxygen.tar.gz doxygen/
+          ls
+        
+      # Проверка релиза
+      - name: Проверка релиза
+        run: |
+          pip3 install aiogram
+          
+        # Отправка в телеграм
+      - name: Проверка релиза
+        run: |
+          echo  $TG_TEXT
+          python3 scripts/send_admin.py $TG_KEY PUSH
+      
