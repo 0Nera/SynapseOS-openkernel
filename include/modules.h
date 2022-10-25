@@ -31,8 +31,8 @@
  * 
  */
 typedef struct {
-    uint32_t permissions_count;
-    uint32_t permissions[MODULE_PERMISSIONS_COUNT];
+    uint32_t permissions_count;                     ///< Количество разрешений
+    uint32_t permissions[MODULE_PERMISSIONS_COUNT]; ///< Список разрешений
 } module_permissions_t;
 
 
@@ -50,11 +50,11 @@ typedef struct {
  * 
  */
 typedef struct {
-    string_utf8_t *name;
-    version_t version; 
-    module_permissions_t permissions;
-    void (*module_post)(uint32_t*, uint32_t*);
-    void (*module_get)(uint32_t*, uint32_t*);
+    string_utf8_t *name;                        ///< Имя модуля
+    version_t version;                          ///< Версия модуля
+    module_permissions_t permissions;           ///< Разрешения модуля
+    void (*module_post)(uint32_t*, uint32_t*);  ///< POST запрос модуля
+    void *(*module_get)(uint32_t*, uint32_t*);  ///< GET запрос модуля
 } module_info_t;
 
 
