@@ -20,13 +20,20 @@
 
 
 /**
- * @brief На начальном этапе у модулей будет 8 разрешений
+ * @brief Количество разрешений для модулей
  * 
  */
-#define MODULE_PERMISSIONS_COUNT 8
+#define MODULE_PERMISSIONS_COUNT 2
 
-#define MODULE_PERMISSION_ALERT 0
-#define MODULE_PERMISSION_ 0
+
+/**
+ * @brief Номера разрешений для модулей
+ * 
+ */
+enum MODULE_PERMISSIONS {
+    MODULE_PERMISSION_ALERT = 0,
+    MODULE_PERMISSION_COM1  = 1
+};
 
 /**
  * @brief Структура для хранения и передачи информации о требуемых модулю разрешениях
@@ -55,9 +62,9 @@ typedef struct {
     string_utf8_t *name;                        ///< Имя модуля
     version_t version;                          ///< Версия модуля
     module_permissions_t permissions;           ///< Разрешения модуля
-    void (*module_permissions)(uint32_t*, uint32_t*);  ///< Обработчик разрешений модуля
-    void (*module_post)(uint32_t*, uint32_t*);  ///< POST запрос модуля
-    void *(*module_get)(uint32_t*, uint32_t*);  ///< GET запрос модуля
+    void (*module_permissions)(module_permissions_t*);  ///< Обработчик разрешений модуля
+    void (*module_post)(uint32_t, uint32_t*);  ///< POST запрос модуля
+    void *(*module_get)(uint32_t);  ///< GET запрос модуля
 } module_info_t;
 
 
