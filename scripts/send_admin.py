@@ -14,11 +14,16 @@ TASK_LIST = [
 ]
 
 
-bot = Bot(token=API_TOKEN)
-
+try:
+    bot = Bot(token=API_TOKEN)
+except Exception as E:
+    print(E)
 
 async def resp():
-    await bot.send_message(838496332, sys.argv[2])
+    try:
+        await bot.send_message(838496332, sys.argv[2])
+    except Exception as E:
+        print(E)
     for i in TASK_LIST:
         try:
             doc = open(i, 'rb')
