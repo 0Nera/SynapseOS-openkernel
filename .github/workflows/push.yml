@@ -63,10 +63,12 @@ jobs:
           echo "           isodir/boot/"
           ls isodir/boot/
           pip3 install aiogram
+        continue-on-error: true
           
         # Отправка в телеграм
       - name: Проверка релиза
         run: python3 scripts/send_admin.py "$TG_KEY" PUSH
+        continue-on-error: true
       # Публикация документации
       #- name: Commit changes
       #  uses: EndBug/add-and-commit@v9

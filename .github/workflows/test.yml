@@ -43,8 +43,10 @@ jobs:
       - name: Проверка релиза
         run: |
           pip3 install aiogram
+        continue-on-error: true
           
         # Отправка в телеграм
       - name: Проверка релиза
         run: python3 scripts/send_admin.py "$TG_KEY" "PUSH"
+        continue-on-error: true
           

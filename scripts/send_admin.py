@@ -13,7 +13,14 @@ TASK_LIST = [
     "doxygen.tar.gz"
 ]
 
-bot = None
+try:
+    print(sys.argv[0])
+    print(sys.argv[2])
+except Exception as E:
+    print(E)
+
+
+global bot
 
 try:
     bot = Bot(token=API_TOKEN)
