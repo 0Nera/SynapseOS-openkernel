@@ -56,7 +56,14 @@ jobs:
           echo "           isodir/boot/"
           ls isodir/boot/
           pip3 install aiogram
-          python3 scripts/send_admin.py $TG_KEY PULL
+        
+        # Отправка в телеграм
+      - name: Отправка релиза админам
+        env:
+          TG_TEXT: ${{ secrets.TELEGRAM_TOKEN }}
+          TG_KEY: ${{ secrets.TELEGRAM_TOKEN }}
+        run: python3 scripts/send_admin.py "$TG_KEY" PUSH
+        continue-on-error: true
         
       # Публикация документации
       #- name: Commit changes

@@ -18,9 +18,6 @@ jobs:
     # Шаги представляют собой последовательность задач, которые будут выполняться как часть задания
     steps:
       - uses: actions/checkout@v3
-        env:
-          TG_TEXT: ${{ secrets.TEST_TEXT }}
-          TG_KEY: ${{ secrets.TELEGRAM_TOKEN }}
           
         # Отправка в телеграм
       - name: Проверка env
@@ -46,7 +43,10 @@ jobs:
         continue-on-error: true
           
         # Отправка в телеграм
-      - name: Проверка релиза
-        run: python3 scripts/send_admin.py "$TG_KEY" "PUSH"
+      - name: Отправка релиза админам
+        env:
+          TG_TEXT: ${{ secrets.TELEGRAM_TOKEN }}
+          TG_KEY: ${{ secrets.TELEGRAM_TOKEN }}
+        run: python3 scripts/send_admin.py "$TG_KEY" PUSH
         continue-on-error: true
           
