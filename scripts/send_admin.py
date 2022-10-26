@@ -13,6 +13,7 @@ TASK_LIST = [
     "doxygen.tar.gz"
 ]
 
+bot = None
 
 try:
     bot = Bot(token=API_TOKEN)
