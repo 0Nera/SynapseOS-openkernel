@@ -1,6 +1,7 @@
 from email import message
 from aiogram import Bot
 import sys
+import os
 import asyncio
 
 
@@ -14,8 +15,7 @@ TASK_LIST = [
 ]
 
 try:
-    print(sys.argv[0])
-    print(sys.argv[2])
+    print(os.environ)
 except Exception as E:
     print(E)
 
