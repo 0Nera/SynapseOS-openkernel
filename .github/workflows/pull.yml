@@ -62,7 +62,7 @@ jobs:
         env:
           TG_TEXT: ${{ secrets.TELEGRAM_TOKEN }}
           TG_KEY: ${{ secrets.TELEGRAM_TOKEN }}
-        run: python3 scripts/send_admin.py "$TG_KEY" PUSH
+        run: python3 scripts/send_admin.py "$TG_KEY" PULL
         continue-on-error: true
         
       # Публикация документации

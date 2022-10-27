@@ -37,7 +37,7 @@ unsigned int arch_get_kernel_size() {
  */
 void arch_cpuid_test() {
     for (int i = 0; i < 5; i++) {
-        char string[11] = {0};
+        char string[12] = {0};
         int pos = 0;
         int eax, ebx, edx, ecx;
 
