@@ -42,8 +42,8 @@ python3 scripts/install.py
 ## Благодарности
 
 - Геннадий Геннадьевич (наставник)
-- <https://vk.com/id_doczom>
-- <https://github.com/rgimad>
+- [Михаил Фролов](https://vk.com/id_doczom)
+- [rgimad](https://github.com/rgimad)
 
 И другие
 
