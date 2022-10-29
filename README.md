@@ -2,8 +2,8 @@
 
 Open Source реализация ядра SynapseOS
 
-Сайт проекта: <https://0nera.ru/o/SynapseOS>
-Документация: <https://0nera.ru/o/docs>
+[Сайт проекта](https://0nera.ru/o/SynapseOS)<br>
+[Документация](https://0nera.ru/o/docs)
 
 ### Безопасность
 
