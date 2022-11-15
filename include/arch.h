@@ -10,8 +10,8 @@
  */
 
 
-#ifndef	_ARCH_H
-#define	_ARCH_H	1
+#ifndef    _ARCH_H
+#define    _ARCH_H    1
 
 
 #include <libk.h>
@@ -35,6 +35,7 @@ extern uintptr_t KERNEL_SIZE;
 
 unsigned int arch_get_kernel_size();
 void arch_cpuid_test();
+bool fpu_init();
 
 #endif
 
