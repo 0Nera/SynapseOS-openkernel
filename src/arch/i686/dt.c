@@ -18,107 +18,82 @@
 #include <com1_log.h>
 
 
+
 /**
- * @brief Ошибка при делении на ноль
+ * @brief Загрузка регистра GDT 
  * 
  */
-static noreturn void division_by_zero() {
-	com1_log("[ERROR]Division by zero");
-	
-	for(;;) {
-		halt();
-	}
-}
+extern void gdt_flush(uint32_t);
 
 
 /**
- * @brief Неверный код операции
+ * @brief Глобальная таблица дескрипторов
  * 
  */
-static noreturn void invalid_opcode() {
-	com1_log("[ERROR]Invalid opcode");
-	
-	for(;;) {
-		halt();
-	}
-}
+gdt_entry_t    gdt_entries[5];
 
 
 /**
- * @brief Двойная ошибка(при прерывании или обработке ошибки)
+ * @brief Структура указателей на GDT 
  * 
  */
-static noreturn void double_error() {
-	com1_log("[ERROR]Double error");
-	
-	for(;;) {
-		halt();
-	}
-}
+gdt_ptr_t      gdt_ptr;
 
 
 /**
- * @brief Недопустимое исключение TSS
+ * @brief Таблица дескрипторов прерываний
  * 
  */
-static noreturn void invalid_tss() {
-	com1_log("[ERROR]Invalid tss");
-	
-	for(;;) {
-		halt();
-	}
-}
+idt_entry_t  idt_entries[256];
 
 
 /**
- * @brief Сегмент недоступен
+ * @brief Структура указателей размещения IDT
  * 
  */
-static noreturn void segment_not_available() {
-	com1_log("[ERROR]Segment not available");
-	
-	for(;;) {
-		halt();
-	}
-}
+idt_ptr_t    idt_ptr;
 
 
 /**
- * @brief Ошибка стека
+ * @brief Загрузка рагистра IDTR - внешняя ассемблерная функция
  * 
  */
-static noreturn void stack_error() {
-	com1_log("[ERROR]Stack error");
-	
-	for(;;) {
-		halt();
-	}
-}
+extern void idt_flush(uint32_t);
 
 
 /**
- * @brief Общая ошибка защиты
+ * @brief Основной обработчик прерываний
  * 
  */
-static noreturn void general_protection_error() {
-	com1_log("[ERROR]GPT error");
-	
-	for(;;) {
-		halt();
-	}
-}
+extern void int_common_stub();
+
+static void idt_init();
+static void gdt_init();
+static void gdt_set_gate(int32_t, uint32_t, uint32_t, uint8_t, uint8_t);
 
 
 /**
- * @brief Ошибка страницы
+ * @brief Установка значения в таблицу GDT
  * 
+ * @param num Номер сегмента
+ * @param base База сегмента
+ * @param limit Лимит сегмента
+ * @param access Байт доступа
+ * @param gran Байт гранулярности
  */
-static noreturn void page_fault() {
-	com1_log("[ERROR]Page fault");
-	
-	for(;;) {
-		halt();
-	}
+void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran)    {
+    /* Заполняем поля базы */
+    gdt_entries[num].base_low = (base & 0xFFFF);
+    gdt_entries[num].base_middle = (base >> 16) & 0xFF;
+    gdt_entries[num].base_high = (base >> 24) & 0xFF;
+
+    /* Заполняем поля лимита */
+    gdt_entries[num].limit_low = (limit & 0xFFFF);
+    gdt_entries[num].granularity = (limit >> 16) & 0xF;
+
+    /* Заполняем байты доступа и гранулярности */
+    gdt_entries[num].granularity |= gran & 0xF0;
+    gdt_entries[num].access = access;   
 }
 
 
@@ -127,8 +102,49 @@ static noreturn void page_fault() {
  * 
  */
 void gdt_init() {
+    com1_log("[GDT]");
+    /* Определяем размер GDT */
+    gdt_ptr.limit = (sizeof(gdt_entry_t)*5) - 1;
+    /* Вычисляем адрес размещения GDT в памяти*/
+    gdt_ptr.base = (uint32_t) &gdt_entries;
+        
+    /* Нулевой дескриптор */
+    gdt_set_gate(0, 0, 0, 0, 0);   
+    /* Дескриптор кода ядра  (ring 0)*/
+    gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
+    /* Дескриптор данных ядра (ring 0)*/  
+    gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
+    /* Дескриптор кода пользовательского режима (ring 3)*/ 
+    gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
+    /* Дескриптор данных пользовательского режима (ring 3)*/  
+    gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);   
 
+    /* Включаем сегментную адресацию  */
+    gdt_flush((uint32_t)&gdt_ptr);
+
+    com1_log_dump((uint32_t*)gdt_entries, 40);
 }
+
+
+/**
+ * @brief  Установка значения в таблицу IDT
+ * 
+ * @param num Номер прерывания
+ * @param base Адресс обработчика
+ * @param selector Селектор сегмента ядра
+ * @param flags Флаги доступа
+ */
+void idt_set_gate(uint8_t num, uint32_t base, uint16_t selector, uint8_t flags) {
+    idt_entries[num].base_low = base & 0xFFFF;
+    idt_entries[num].base_high = (base >> 16) & 0xFFFF;
+    
+    idt_entries[num].selector = selector;
+    idt_entries[num].allways0 = 0;
+
+    idt_entries[num].flags = flags; /* | 0x60 - для пользовательского */
+                                    /* режима */ ;
+}
+
 
 
 /**
@@ -136,6 +152,30 @@ void gdt_init() {
  * 
  */
 void idt_init() {
+    com1_log("[IDT]");
+    /* Инициализация структуры указателя размером и адресом IDT */
+    idt_ptr.limit = sizeof(idt_entry_t)*256 - 1;
+    idt_ptr.base = (uint32_t) &idt_entries;
+    
+    /* Очистка памяти */
+    memset(&idt_entries, 0, sizeof(idt_entry_t)*256);   
+
+    /* Инициализация обоих PIC */
+    ports_outb(0x20, PIC1_ICW1); /* ICW1 */
+    ports_outb(0xA0, PIC2_ICW1);
+
+    ports_outb(0x21, PIC1_ICW2); /* ICW2 */
+    ports_outb(0xA1, PIC2_ICW2);
+
+    ports_outb(0x21, PIC1_ICW3); /* ICW3 */
+    ports_outb(0xA1, PIC2_ICW3);
+
+    ports_outb(0x21, PIC1_ICW4); /* ICW4 */
+    ports_outb(0xA1, PIC2_ICW4);
+    
+    /* Разрешаем прерывания на всех линиях */
+    ports_outb(0x21, 0x00);      /* OCW1 */
+    ports_outb(0xA1, 0x00);
 
 }
 
@@ -149,18 +189,11 @@ void idt_init() {
 bool dt_init() {
     gdt_init();
     idt_init();
+    int_init();
 
-
-    // Установка векторов прерываний для ошибок
-	int_set_handler(0,  &division_by_zero);
-	int_set_handler(6,  &invalid_opcode);
-	int_set_handler(8,  &double_error);
-	int_set_handler(10, &invalid_tss);
-	int_set_handler(11, &segment_not_available);
-	int_set_handler(12, &stack_error);
-	int_set_handler(13, &general_protection_error);
-	int_set_handler(14, &page_fault);
-	int_set_handler(36, NULL);
-
-	return true;
+    /* Загрузка регистра IDTR */
+    idt_flush((uint32_t)&idt_ptr);
+    com1_log_dump(&idt_ptr, sizeof(idt_ptr));
+    
+    return true;
 }
