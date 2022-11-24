@@ -10,8 +10,8 @@
  */
 
 
-#ifndef	_LIBK_H
-#define	_LIBK_H	1
+#ifndef    _LIBK_H
+#define    _LIBK_H    1
 
 
 /**
@@ -25,28 +25,28 @@
  * @brief Инициализация AP до использования макросами va_arg и va_end.
  * 
  */
-#define va_start(v,l)	__builtin_va_start(v,l)
+#define va_start(v,l)    __builtin_va_start(v,l)
 
 
 /**
  * @brief Освобождение памяти va_list
  * 
  */
-#define va_end(v)	__builtin_va_end(v)
+#define va_end(v)    __builtin_va_end(v)
 
 
 /**
  * @brief Парсинг аргументов va_list
  * 
  */
-#define va_arg(v,l)	__builtin_va_arg(v,l)
+#define va_arg(v,l)    __builtin_va_arg(v,l)
 
 
 /**
  * @brief Копирование va_list
  * 
  */
-#define va_copy(d,s)	__builtin_va_copy(d,s)
+#define va_copy(d,s)    __builtin_va_copy(d,s)
 
 
 /**
@@ -77,7 +77,9 @@
  * @brief Реализация NULL
  * 
  */
+#ifndef NULL
 #define NULL ((void *)0)
+#endif
 
 
 /**
@@ -129,6 +131,20 @@ typedef unsigned short uint16_t;
 typedef unsigned int uint32_t;
 
 
+/**
+ * @brief Число от 0 до 18446744073709551616 (8 байт)
+ * 
+ */
+typedef unsigned long uint64_t;
+
+
+/**
+ * @brief Целочисленный тип данных для измерения величин
+ * 
+ */
+typedef __SIZE_TYPE__    size_t;
+
+
 
 /**
  * @brief Специальный тип указателей
@@ -152,7 +168,8 @@ typedef __builtin_va_list va_list;
 
 
 uint32_t strlen(const char *string);
-
+void memset(void *address, uint8_t value, uint32_t length);
+int strcmp(char *string1, char *string2);
 bool multiboot2_init(unsigned int addr);
 
 
