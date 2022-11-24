@@ -50,15 +50,35 @@ jobs:
         run: |
           git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
           make -C limine
+          ls limine
           xorriso -as mkisofs -b limine-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table --efi-boot limine-cd-efi.bin -efi-boot-part --efi-boot-image --protective-msdos-label isodir -o SynapseOS-limine.iso
           grub-mkrescue -o SynapseOS-grub.iso isodir
 
       # Генерация документации
       - name: Генерация документации
         run: |
+          echo mkdir -p doxygen
           mkdir -p doxygen
+
+          echo ls
+          ls
+
+          echo ls scripts/
+          ls scripts/
+
+          echo ls scripts/doxygen
+          ls scripts/doxygen
+
+          echo ls scripts/doxygen/doxygen-awesome-css
+          ls scripts/doxygen/doxygen-awesome-css
+
+          echo doxygen scripts/Doxyfile
           doxygen scripts/Doxyfile
-          tar -cvf doxygen.tar.gz doxygen/
+
+          echo tar -cf doxygen.tar.gz doxygen/
+          tar -cf doxygen.tar.gz doxygen/
+
+          echo ls
           ls
         
       # Проверка релиза
