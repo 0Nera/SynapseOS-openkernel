@@ -1,9 +1,17 @@
 # SynapseOS-openkernel
 
+
 Open Source реализация ядра SynapseOS
 
 [Сайт проекта](https://0nera.ru/o/SynapseOS)<br>
 [Документация](https://0nera.ru/o/docs)
+
+[![push](https://github.com/0Nera/SynapseOS-openkernel/actions/workflows/push.yml/badge.svg?branch=main)](https://github.com/0Nera/SynapseOS-openkernel/actions/workflows/push.yml)
+
+![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=black)
+![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=black)
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=black)
+
 
 ### Безопасность
 
