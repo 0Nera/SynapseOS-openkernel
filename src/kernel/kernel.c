@@ -60,7 +60,7 @@ noreturn void kernel_startup(unsigned int eax, unsigned int ebx, unsigned int es
     
     unit_test(dt_init(), "Настройка таблиц дескрипторов");
     
-    //unit_test(pmm_init(), "Настройка менеджера физической памяти");
+    unit_test(pmm_init(), "Настройка менеджера физической памяти");
 
     //arch_cpuid_test();
     
