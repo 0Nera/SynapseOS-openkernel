@@ -27,10 +27,23 @@ jobs:
       # Установка зависимостей
       - name: Установка зависимостей
         run: |
-          sudo apt install python3 build-essential xorriso grub-pc-bin mtools zip doxygen
+          sudo apt install python3 build-essential xorriso grub-pc-bin mtools zip cmake make
           wget -nv https://github.com/lordmilko/i686-elf-tools/releases/download/7.1.0/i686-elf-tools-linux.zip
           sudo unzip i686-elf-tools-linux.zip -d /usr/local
           rm i686-elf-tools-linux.zip
+
+      # Сборка doxygen
+      - name: Сборка doxygen
+        run: |
+          git clone https://github.com/doxygen/doxygen.git
+          cd doxygen
+          mkdir build
+          cd build
+          cmake -G "Unix Makefiles" ..
+          make
+          make install
+          cd ../..
+          ls
           
       # Запуск сборки ядра
       - name: Сборка ядра
