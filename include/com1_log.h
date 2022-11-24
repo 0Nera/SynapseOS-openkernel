@@ -14,13 +14,16 @@
 #include <libk.h>
 
 
-#ifndef	_COM1_LOG_H
-#define	_COM1_LOG_H	1
+#ifndef    _COM1_LOG_H
+#define    _COM1_LOG_H    1
 
 
 #if (defined __i386__ || defined __x86_64__)
 
+
+void com1_log_dump(void *address, uint32_t size);
 void com1_log_printf(const char *format_string, ...);
+
 
 #if DEBUG
 #define com1_log(M, ...)                            \
