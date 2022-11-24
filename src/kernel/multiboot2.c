@@ -15,6 +15,9 @@
 #include <multiboot2.h>
 
 
+extern uint32_t pmm_memory_all;       ///< Размер доступной физической памяти
+
+
 /**
  * @brief Получение данных из multiboot2
  * 
@@ -54,6 +57,8 @@ bool multiboot2_init(unsigned int addr) {
                 com1_log ("mem_lower = %uKB, mem_upper = %uKB",
                         ((struct multiboot_tag_basic_meminfo *) tag)->mem_lower,
                         ((struct multiboot_tag_basic_meminfo *) tag)->mem_upper);
+                pmm_memory_all = ((struct multiboot_tag_basic_meminfo *) tag)->mem_upper;
+                
                 break;
             case MULTIBOOT_TAG_TYPE_BOOTDEV:
                 com1_log ("Boot device %x,%u,%u",
