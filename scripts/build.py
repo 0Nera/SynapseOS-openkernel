@@ -13,7 +13,7 @@ DEBUG_FLAGS = ""
 if 0:
     DEBUG_FLAGS = "-ggdb -DDEBUG=1"
 CC_FLAGS = f"-fno-builtin -fstack-check=no -fno-stack-protector -ffreestanding {DEBUG_FLAGS} -Wall -Wextra -O0 -I include// -c "
-CC_FLAGS = f"-ffreestanding {DEBUG_FLAGS} -Wall -Wextra -O3 -I include// -c "
+CC_FLAGS = f"-ffreestanding {DEBUG_FLAGS} -Wall -Wextra -O0 -I include// -c "
 LD_FLAGS = f"-T src//arch//{ARCH}//link.ld -nostdlib -O0 "
 
 
